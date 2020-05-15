@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rivalry-container bg-rivalryDark">
     <nuxt />
   </div>
 </template>
@@ -16,7 +16,6 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
 *,
 *:before,
 *:after {
@@ -24,32 +23,13 @@ html {
   margin: 0;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.rivalry-container {
+  background: url('~assets/images/blue-transparent-triangle-pattern.webp');
+  background-image: url('~assets/images/blue-transparent-triangle-pattern.webp'),
+    radial-gradient(
+      38% 130% at center center,
+      rgb(27, 139, 186) 52%,
+      rgb(14, 20, 46) 100%
+    );
 }
 </style>
