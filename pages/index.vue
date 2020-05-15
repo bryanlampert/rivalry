@@ -1,73 +1,76 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        rivalry
-      </h1>
-      <h2 class="subtitle">
-        Rivalry code challenge
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div class="container mx-auto p-6 lg:px-0 xl:px-10 bg-rivalryDark">
+    <div class="flex justify-center mb-6">
+      <div class="flex-shrink-0">
+        <img
+          src="../assets/images/logo.svg"
+          alt="rivalry logo"
+          class="w-full h-16"
+        />
       </div>
+    </div>
+
+    <div class="lg:flex">
+      <div
+        class="lg:flex-initial w-full grid grid-cols-3 gap-4"
+        :class="slips ? 'w-full lg:w-9/12' : 'w-full'"
+      >
+        <div
+          v-for="match in matches"
+          :key="match.id"
+          class="col-span-3"
+          :class="{ 'mr-4': slips }"
+        >
+          <Match :match-data="match" :slip-showing="slips"></Match>
+        </div>
+      </div>
+      <transition name="slide">
+        <div v-if="slips" class="lg:flex-initial lg:w-3/12 w-full">
+          <BetSlip />
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import { mapState } from 'vuex'
+import Match from '~/components/Match'
+import BetSlip from '~/components/BetSlip'
 
 export default {
   components: {
-    Logo
+    Match,
+    BetSlip
+  },
+  async fetch({ store }) {
+    await store.dispatch('GET_MATCH_DATA')
+  },
+  computed: {
+    ...mapState({
+      matches: (state) => {
+        return state.matches
+      },
+      betSlip: (state) => {
+        return state.betSlip
+      }
+    }),
+    slips() {
+      return this.betSlip.length > 0
+    }
   }
 }
 </script>
 
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
+<style scoped>
+.slide-enter-active {
+  transition: all 1s ease;
 }
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.slide-leave-active {
+  transition: all 1s ease;
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.slide-enter,
+.slide-leave-to {
+  transform: translateY(-10%);
 }
 </style>
